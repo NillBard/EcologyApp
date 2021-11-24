@@ -1,7 +1,7 @@
 import 'package:echology/pages/Profile.dart';
 import 'package:echology/pages/ProscessingMap.dart';
 import 'package:echology/pages/blogPage.dart';
-import 'package:echology/pages/progress.dart';
+import 'package:echology/pages/Processing.dart';
 import 'package:echology/pages/scanner.dart';
 import 'package:flutter/material.dart';
  
