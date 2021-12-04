@@ -9,5 +9,6 @@ module.exports = {
   ExceptionTypes: {
     NotFound: 404,
     Unauthorized: 401,
+    Conflict: 409,
   },
 }
