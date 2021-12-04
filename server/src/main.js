@@ -5,6 +5,8 @@ const { logger } = require('./core/logger')
 const { errorHandler } = require('./core/errorHandler')
 const { notFound } = require('./core/notFound')
 
+const { authRouter } = require('./auth/authRouter')
+
 const PORT = process.env.PORT || 4200
 const HOST = process.env.HOST || '0.0.0.0'
 
@@ -14,5 +16,7 @@ const app = express()
   .use(logger())
   .use(errorHandler())
   .use(notFound())
+
+app.use('/api/auth', authRouter)
 
 app.listen(PORT, HOST, () => console.log(`Server has started on port ${PORT}`))
