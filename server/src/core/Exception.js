@@ -10,5 +10,6 @@ module.exports = {
     NotFound: 404,
     Unauthorized: 401,
     Conflict: 409,
+    UnprocessableEntity: 422,
   },
 }

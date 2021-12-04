@@ -1,3 +1,4 @@
+const yup = require('yup')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -8,6 +9,23 @@ function omitPassword(user) {
   return { name: user.name, email: user.email, id: user.id }
 }
 
+const registerBody = yup.object().shape({
+  name: yup
+    .string()
+    .required()
+    .min(3, `Name must be at least 3 characters long`),
+  email: yup.string().email().required(),
+  password: yup
+    .string()
+    .required()
+    .min(6, `Password must be at least 6 characters long`),
+})
+
+const loginBody = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+})
+
 module.exports = {
   AuthController: class extends Controller {
     constructor() {
@@ -15,6 +33,12 @@ module.exports = {
     }
 
     async register(req, res) {
+      try {
+        await registerBody.validate(req.body)
+      } catch (err) {
+        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
+      }
+
       const candidate = this.entity.findUnique({
         where: { email: req.body.email },
       })
@@ -38,6 +62,12 @@ module.exports = {
     }
 
     async login(req, res) {
+      try {
+        await loginBody.validate(req.body)
+      } catch (err) {
+        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
+      }
+
       const user = this.entity.findUnique({
         where: { email: req.body.email },
       })
