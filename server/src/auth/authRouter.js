@@ -13,6 +13,11 @@ authRouter.post(
 
 authRouter.post('/login', rescue(authController.login.bind(authController)))
 
+authRouter.post(
+  '/refresh-tokens',
+  rescue(authController.refreshTokens.bind(authController)),
+)
+
 module.exports = {
   authRouter,
 }

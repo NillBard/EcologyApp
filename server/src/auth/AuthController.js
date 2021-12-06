@@ -5,10 +5,6 @@ const bcrypt = require('bcrypt')
 const { Controller } = require('../core/Controller')
 const { Exception, ExceptionTypes } = require('../core/Exception')
 
-function omitPassword(user) {
-  return { name: user.name, email: user.email, id: user.id }
-}
-
 const registerBody = yup.object().shape({
   name: yup
     .string()
@@ -26,10 +22,22 @@ const loginBody = yup.object().shape({
   password: yup.string().required(),
 })
 
+const authenticateBody = yup.object().shape({
+  token: yup.string().required(),
+})
+
 module.exports = {
   AuthController: class extends Controller {
     constructor() {
       super('user')
+    }
+
+    _generateAccessToken(payload) {
+      return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 60 * 30 })
+    }
+
+    _generateRefreshToken(payload) {
+      return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
     }
 
     async register(req, res) {
@@ -54,11 +62,14 @@ module.exports = {
       const user = await this.entity.create({
         data: { ...req.body, password: hashedPassowrd },
       })
-      const token = jwt.sign(omitPassword(user), process.env.JWT_SECRET, {
-        expiresIn: '1 day',
+      const refreshToken = this._generateRefreshToken({ id: user.id })
+      const accessToken = this._generateAccessToken({
+        id: user.id,
+        email: user.email,
+        name: user.name,
       })
 
-      res.json({ status: 201, data: { token } })
+      res.json({ status: 201, data: { accessToken, refreshToken } })
     }
 
     async login(req, res) {
@@ -88,11 +99,41 @@ module.exports = {
         throw new Exception(ExceptionTypes.Unauthorized, 'Wrong password')
       }
 
-      const token = jwt.sign(omitPassword(user), process.env.JWT_SECRET, {
-        expiresIn: '1 day',
+      const refreshToken = this._generateRefreshToken({ id: user.id })
+      const accessToken = this._generateAccessToken({
+        id: user.id,
+        name: user.name,
+        email: user.email,
       })
 
-      res.json({ status: 200, data: { token } })
+      res.json({ status: 200, data: { accessToken, refreshToken } })
+    }
+
+    async refreshTokens(req, res) {
+      try {
+        await authenticateBody.validate(req.body)
+      } catch (err) {
+        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
+      }
+
+      try {
+        const { id } = jwt.verify(req.body.token, process.env.JWT_SECRET)
+        const user = await this.entity.findUnique({ where: { id } })
+        const refreshToken = this._generateRefreshToken({ id })
+        const accessToken = this._generateAccessToken({
+          id,
+          name: user.name,
+          email: user.email,
+        })
+
+        res.json({ status: 200, data: { accessToken, refreshToken } })
+      } catch (err) {
+        if (err instanceof jwt.TokenExpiredError) {
+          throw new Exception(ExceptionTypes.Unauthorized, 'Token expired')
+        } else {
+          throw new Exception(ExceptionTypes.Unauthorized, 'Invalid token')
+        }
+      }
     }
   },
 }
