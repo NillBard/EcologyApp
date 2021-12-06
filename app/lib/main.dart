@@ -1,4 +1,5 @@
 import 'package:echology/pages/MainScreen.dart';
+import 'package:echology/pages/auth/Login/login.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +12,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Ecology App',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: MainScreen(),      
+      home: Login(),  
+      routes: {
+        '/home': (_)=> MainScreen(),
+        '/login': (_)=>Login(),
+        
+      }
+          
     );
   }
 }
