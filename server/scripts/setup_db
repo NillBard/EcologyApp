@@ -1,0 +1,10 @@
+#!/bin/bash
+docker stop ecology-db-${MODE} || true && \
+docker rm ecology-db-${MODE} || true && \
+docker run --env-file ${PWD}/.env.${MODE} \
+           -d \
+           --name ecology-db-${MODE} \
+           -p 543$(if [[ $MODE = 'test' ]]; then echo 2; else echo 1; fi):5432 \
+           postgres:alpine && \
+sleep 5 && \
+npx dotenv -e ${PWD}/.env.${MODE} -- npx prisma db push

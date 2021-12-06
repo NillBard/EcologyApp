@@ -2,17 +2,20 @@
   "name": "server",
   "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon src/main.js",
+    "predev": "MODE=development ./scripts/setup_db",
+    "dev": "dotenv -e .env.development -- npx nodemon src/main.js",
     "start": "node src/main.js",
     "prepare": "prisma generate",
-    "pretest": "prisma db push",
-    "test": "jest"
+    "pretest": "MODE=test ./scripts/setup_db",
+    "test": "dotenv -e .env.test -- npx jest"
   },
   "license": "UNLICENSED",
   "dependencies": {
     "@prisma/client": "^3.4.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.1.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "swagger-ui-express": "^4.2.0",
