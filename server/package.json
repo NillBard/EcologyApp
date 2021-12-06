@@ -2,11 +2,11 @@
   "name": "server",
   "version": "0.0.0",
   "scripts": {
-    "predev": "MODE=development ./scripts/setup_db",
+    "predev": "cross-env MODE=development ./scripts/setup_db",
     "dev": "dotenv -e .env.development -- npx nodemon src/main.js",
     "start": "node src/main.js",
     "prepare": "prisma generate",
-    "pretest": "MODE=test ./scripts/setup_db",
+    "pretest": "cross-env MODE=test ./scripts/setup_db",
     "test": "dotenv -e .env.test -- npx jest"
   },
   "license": "UNLICENSED",
