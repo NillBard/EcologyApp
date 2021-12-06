@@ -39,7 +39,7 @@ module.exports = {
         throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
       }
 
-      const candidate = this.entity.findUnique({
+      const candidate = await this.entity.findUnique({
         where: { email: req.body.email },
       })
 
@@ -68,7 +68,7 @@ module.exports = {
         throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
       }
 
-      const user = this.entity.findUnique({
+      const user = await this.entity.findUnique({
         where: { email: req.body.email },
       })
 
