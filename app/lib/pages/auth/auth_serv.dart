@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,11 +10,16 @@ class AuthService {
 
   Future<dynamic> register(String name, String email, String password) async {
     try {
-      var res = await http.post('$baseUrl/auth/register', body: {
+      var res = await http.post('$baseUrl/auth/register',
+       headers: <String, String>{
+      'Content-Type': 'application/json',
+      },
+       body: jsonEncode(<String, String> {
         'name': name,
         'email': email,
         'password': password,
-      });
+      })
+      );
 
       return res.body;
     } finally {
@@ -24,10 +31,13 @@ class AuthService {
     try {
       var res = await http.post(
         '$baseUrl/auth/login',
-        body: {
+        headers: <String, String>{
+      'Content-Type': 'application/json',
+      },
+        body: jsonEncode(<String, String> {
           'email': email,
           'password': password,
-        },
+        })
       );
 
       return res?.body;

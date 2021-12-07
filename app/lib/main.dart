@@ -1,8 +1,10 @@
 import 'package:echology/pages/MainScreen.dart';
-import 'package:echology/pages/auth/Login/login.dart';
+import 'package:echology/pages/auth/login.dart';
 import 'package:echology/pages/auth/auth_serv.dart';
 import 'package:echology/providers/providers.dart';
 import 'package:flutter/material.dart';
+
+import 'pages/auth/sginUp.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/home': (_) => MainScreen(),
             '/login': (_) => Login(),
+            '/register': (_) => SignUp(),
           }),
     );
   }

@@ -11,27 +11,25 @@ class Login extends StatelessWidget {
     final FormBloc formBloc = Provider.of(context);
 
     return Scaffold(
-        body: Container(
-            height: 450,
-            margin: EdgeInsets.only(top: 120),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    AuthLogo(),
-                    _emailField(formBloc),
-                    _passwordField(formBloc),
-                    _logInButton(formBloc),
-                    // _showSignUpButton()
-                  ],
-                ),
+      body: Container(
+          height: 500,
+          margin: EdgeInsets.only(top: 120),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  AuthLogo(),
+                  _emailField(formBloc),
+                  _passwordField(formBloc),
+                  _logInButton(formBloc),
+                  _showSignUpButton(context)
+                ],
               ),
-            )
-          ),
-         
-       );
+            ),
+          )),
+    );
   }
 }
 
@@ -41,7 +39,7 @@ Widget _emailField(FormBloc bloc) {
       builder: (context, snapshot) {
         return TextFormField(
           onChanged: bloc.changeEmail,
-          decoration: new InputDecoration(           
+          decoration: new InputDecoration(
               hintText: 'Email',
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
@@ -51,18 +49,18 @@ Widget _emailField(FormBloc bloc) {
 
 Widget _passwordField(FormBloc bloc) {
   return StreamBuilder(
-    stream: bloc.password,
-    builder: (context, snapshot) {
-    return TextFormField(
-      onChanged: bloc.changePassword,
-      obscureText: true,
-      validator: (value) => null,
-      textAlign: TextAlign.start,
-      decoration: new InputDecoration(
-          hintText: 'Password',
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
-    );
-  });
+      stream: bloc.password,
+      builder: (context, snapshot) {
+        return TextFormField(
+          onChanged: bloc.changePassword,
+          obscureText: true,
+          textAlign: TextAlign.start,
+          decoration: new InputDecoration(
+              hintText: 'Password',
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
+        );
+      });
 }
 
 Widget _logInButton(FormBloc bloc) {
@@ -87,8 +85,17 @@ Widget _logInButton(FormBloc bloc) {
       });
 }
 
-Widget _showSignUpButton() {
-  return SafeArea(
-      child: TextButton(
-          onPressed: () {}, child: Text('Don\'t have an account? Sign Up')));
+Widget _showSignUpButton(context) {
+  return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+      Text('Don\'t have an account? ', style: TextStyle(color: Colors.grey)),
+      TextButton(onPressed: () => Navigator.pushNamed(context, '/register'), child: Text(
+        'SignUp', 
+        style: TextStyle(color: Colors.blue)
+        )
+      )
+    ],
+  ));
 }
