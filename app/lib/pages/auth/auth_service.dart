@@ -1,46 +1,42 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final baseUrl = 'http://192.168.1.106:4200/api';
+  final baseUrl = dotenv.env['API_URL'];
   // ignore: non_constant_identifier_names
   static final SESSION = FlutterSession();
 
   Future<dynamic> register(String name, String email, String password) async {
     try {
       var res = await http.post('$baseUrl/auth/register',
-       headers: <String, String>{
-      'Content-Type': 'application/json',
-      },
-       body: jsonEncode(<String, String> {
-        'name': name,
-        'email': email,
-        'password': password,
-      })
-      );
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(<String, String>{
+            'name': name,
+            'email': email,
+            'password': password,
+          }));
 
       return res.body;
-    } finally {
-      // done you can do something here
-    }
+    } finally {}
   }
 
   Future<dynamic> login(String email, String password) async {
     try {
-      var res = await http.post(
-        '$baseUrl/auth/login',
-        headers: <String, String>{
-      'Content-Type': 'application/json',
-      },
-        body: jsonEncode(<String, String> {
-          'email': email,
-          'password': password,
-        })
-      );
+      var res = await http.post('$baseUrl/auth/login',
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(<String, String>{
+            'email': email,
+            'password': password,
+          }));
 
-      return res?.body;
+      return res.body;
     } finally {
       // you can do somethig here
     }
@@ -55,7 +51,7 @@ class AuthService {
     return await SESSION.get('tokens');
   }
 
-  static removeToken()async {
+  static removeToken() async {
     await SESSION.prefs.clear();
   }
 }
@@ -71,7 +67,7 @@ class _AuthData {
 
     data['accessToken'] = accessToken;
     data['refreshToken'] = refreshToken;
-    
+
     return data;
   }
 }

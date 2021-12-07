@@ -13,23 +13,22 @@ class blogPage extends StatelessWidget {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(left: 40),
-              child: Text("Blog",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    fontSize: 40,
-                  ),
+              child: Text(
+                "Blog",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
                 ),
+              ),
             ),
             article_block_list(),
           ],
         ),
       ),
-     
     );
   }
 }
-
 
 class article_block_list extends StatelessWidget {
   const article_block_list({Key? key}) : super(key: key);
@@ -37,26 +36,23 @@ class article_block_list extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-            ArticleBlock(),
-            ArticleBlock(), 
-        ]
-      )
-    );
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+          ArticleBlock(),
+          ArticleBlock(),
+        ]));
   }
 }
 
-
 class ArticleBlock extends StatelessWidget {
-const ArticleBlock({Key? key}) : super(key: key);
+  const ArticleBlock({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:EdgeInsets.all(30),
-      padding: EdgeInsets.symmetric(horizontal: 10),    
+      margin: EdgeInsets.all(30),
+      padding: EdgeInsets.symmetric(horizontal: 10),
       height: 120,
       width: 90,
       decoration: BoxDecoration(
@@ -67,17 +63,17 @@ const ArticleBlock({Key? key}) : super(key: key);
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('Article', 
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 20.0,
-                  ),
-              ),
+          Text(
+            'Article',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
+          ),
           Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend quam adipiscing tortor vitae cursus non tellus...",
-              overflow: TextOverflow.fade
-              )
+              overflow: TextOverflow.fade)
         ],
       ),
     );

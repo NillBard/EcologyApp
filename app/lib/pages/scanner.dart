@@ -10,7 +10,7 @@ class Scanner extends StatefulWidget {
 }
 
 class _Scanner extends State<Scanner> {
-   String _scanBarcode = 'Unknown';
+  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {

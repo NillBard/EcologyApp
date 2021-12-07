@@ -1,12 +1,17 @@
-import 'package:echology/pages/MainScreen.dart';
-import 'package:echology/pages/auth/login.dart';
-import 'package:echology/pages/auth/auth_serv.dart';
-import 'package:echology/providers/providers.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/auth/sginUp.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(MyApp());
+import 'package:echology/pages/main_screen.dart';
+import 'package:echology/pages/auth/login.dart';
+import 'package:echology/pages/auth/auth_service.dart';
+import 'package:echology/providers/providers.dart';
+import 'pages/auth/sgin_up.dart';
+
+Future main() async {
+  await dotenv.load(fileName: ".env.local");
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

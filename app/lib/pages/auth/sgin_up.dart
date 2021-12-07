@@ -2,19 +2,19 @@ import 'package:echology/bloc/form_bloc.dart';
 import 'package:echology/helper/hepler.dart';
 import 'package:echology/providers/providers.dart';
 import 'package:echology/widgets/auth_logo.dart';
-import 'package:echology/widgets/logo.dart';
+import 'package:echology/widgets/Logo.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class Login extends StatelessWidget {
+class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FormBloc formBloc = Provider.of(context);
 
     return Scaffold(
       body: Container(
-          height: 500,
-          margin: EdgeInsets.only(top: 120),
+          height: 550,
+          margin: EdgeInsets.only(top: 75),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60),
@@ -28,9 +28,10 @@ class Login extends StatelessWidget {
                     child: Helper().errorMessage(formBloc),
                   ),
                   _emailField(formBloc),
+                  _nameField(formBloc),
                   _passwordField(formBloc),
-                  _logInButton(formBloc),
-                  _showSignUpButton(context)
+                  _siginUpButton(formBloc),
+                  _showLogInButton(context)
                 ],
               ),
             ),
@@ -53,6 +54,21 @@ Widget _emailField(FormBloc bloc) {
       });
 }
 
+Widget _nameField(FormBloc bloc) {
+  return StreamBuilder(
+      stream: bloc.name,
+      builder: (context, snapshot) {
+        return TextFormField(
+          onChanged: bloc.changeName,
+          textAlign: TextAlign.start,
+          decoration: new InputDecoration(
+              hintText: 'Name',
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
+        );
+      });
+}
+
 Widget _passwordField(FormBloc bloc) {
   return StreamBuilder(
       stream: bloc.password,
@@ -69,9 +85,9 @@ Widget _passwordField(FormBloc bloc) {
       });
 }
 
-Widget _logInButton(FormBloc bloc) {
+Widget _siginUpButton(FormBloc bloc) {
   return StreamBuilder(
-      stream: bloc.submitValidForm,
+      stream: bloc.SubmitValidRegForm,
       builder: (context, snapshot) {
         return ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -85,21 +101,21 @@ Widget _logInButton(FormBloc bloc) {
                 print(snapshot.error);
                 return null;
               }
-              bloc.login(context);
+              bloc.register(context);
             },
-            child: Text('Login'));
+            child: Text('SignUp'));
       });
 }
 
-Widget _showSignUpButton(context) {
+Widget _showLogInButton(context) {
   return Container(
       child: Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text('Don\'t have an account? ', style: TextStyle(color: Colors.grey)),
+      Text('Already have an account? ', style: TextStyle(color: Colors.grey)),
       TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/register'),
-          child: Text('SignUp', style: TextStyle(color: Colors.blue)))
+          onPressed: () => Navigator.pushNamed(context, '/login'),
+          child: Text('LogIn', style: TextStyle(color: Colors.blue)))
     ],
   ));
 }

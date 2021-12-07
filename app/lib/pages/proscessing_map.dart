@@ -9,11 +9,10 @@ class ProcessingMap extends StatefulWidget {
 }
 
 class _ProcessingMap extends State<ProcessingMap> {
-
   @override
- double long = 55.713039;
+  double long = 55.713039;
   double lat = 37.677795;
-  LatLng point = LatLng(55.713039,37.677795);
+  LatLng point = LatLng(55.713039, 37.677795);
   var location = [];
 
   @override
@@ -78,8 +77,7 @@ class _ProcessingMap extends State<ProcessingMap> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text(
-                          ""),
+                      Text(""),
                     ],
                   ),
                 ),
@@ -91,4 +89,3 @@ class _ProcessingMap extends State<ProcessingMap> {
     );
   }
 }
-

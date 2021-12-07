@@ -1,4 +1,4 @@
-import 'package:echology/pages/auth/auth_serv.dart';
+import 'package:echology/pages/auth/auth_service.dart';
 import 'package:echology/widgets/Logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +9,6 @@ class Profile extends StatefulWidget {
 }
 
 class _Profile extends State<Profile> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +19,7 @@ class _Profile extends State<Profile> {
               Logo(),
               profile_info(),
               Lsit_typeTrash(),
-               TextButton(
+              TextButton(
                 child: Text('Log out'),
                 onPressed: () {
                   Navigator.popAndPushNamed(context, '/login');
@@ -34,8 +33,6 @@ class _Profile extends State<Profile> {
     );
   }
 }
-
-
 
 class profile_info extends StatelessWidget {
   @override
@@ -62,8 +59,6 @@ class profile_info extends StatelessWidget {
     ]));
   }
 }
-
-
 
 class typeTrashProcessing extends StatelessWidget {
   @override

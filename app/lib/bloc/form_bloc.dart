@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:echology/pages/auth/auth_serv.dart';
+import 'package:echology/pages/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
