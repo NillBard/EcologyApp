@@ -5,6 +5,9 @@ module.exports = {
         `[${new Date().toLocaleTimeString()}]`,
         `${req.method} ${req.path}`,
       )
+      if (req.body) {
+        console.log(`[Body] ${JSON.stringify(req.body)}`)
+      }
       next()
     }
   },
