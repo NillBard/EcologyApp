@@ -12,9 +12,8 @@ import 'package:flutter/material.dart';
 
 class _MainScreen extends State<MainScreen>{
 
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
   List<Widget> _widgetOptions = <Widget>[
-    Processing(),
     ProcessingMap(),
     Scanner(),
     blogPage(),
@@ -36,13 +35,7 @@ class _MainScreen extends State<MainScreen>{
       bottomNavigationBar: BottomNavigationBar(
         
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.scanner,
-              
-            ),
-            label: 'Recycling',
-          ),
+          
           BottomNavigationBarItem(
             icon: Icon(
               Icons.map,
