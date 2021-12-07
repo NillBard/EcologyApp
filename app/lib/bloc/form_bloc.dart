@@ -27,6 +27,7 @@ class FormBloc {
   }
 
   Function(String) get addError => _errorMessage.sink.add;
+
   // getters: Add stream
   Stream<String> get email => _email.stream;
   Stream<String> get password => _password.stream;
@@ -40,7 +41,7 @@ class FormBloc {
         (e, p, er) => true,
       );
 
-   Stream<bool> get SubmitValidRegForm => Rx.combineLatest4(
+  Stream<bool> get SubmitValidRegForm => Rx.combineLatest4(
         email,
         name,
         password,
@@ -53,11 +54,12 @@ class FormBloc {
   dynamic register(BuildContext context) async {
     authInfo = AuthService();
 
-    final res = await authInfo.register(_name.value,_email.value, _password.value);
+    final res =
+        await authInfo.register(_name.value, _email.value, _password.value);
     final data = jsonDecode(res) as Map<String, dynamic>;
 
     if (data['status'] != 200) {
-      addError(data['message']);
+      addError(data['error']['message']);
     } else {
       AuthService.setToken(data['token'], data['refreshToken']);
       Navigator.pushNamed(context, '/home');
@@ -73,7 +75,7 @@ class FormBloc {
     final data = jsonDecode(res) as Map<String, dynamic>;
 
     if (data['status'] != 200) {
-      addError(data['message']);
+      addError(data['error']['message']);
     } else {
       AuthService.setToken(data['token'], data['refreshToken']);
       Navigator.pushNamed(context, '/home');

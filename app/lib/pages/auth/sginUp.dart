@@ -1,4 +1,5 @@
 import 'package:echology/bloc/form_bloc.dart';
+import 'package:echology/helper/hepler.dart';
 import 'package:echology/providers/providers.dart';
 import 'package:echology/widgets/AuthLogo.dart';
 import 'package:echology/widgets/Logo.dart';
@@ -21,6 +22,11 @@ class SignUp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     AuthLogo(),
+                    Container(
+                      width: 300,
+                      height: 35,
+                      child: Helper().errorMessage(formBloc),
+                     ),
                     _emailField(formBloc),
                     _nameField(formBloc),
                     _passwordField(formBloc),
