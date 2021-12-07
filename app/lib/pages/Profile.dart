@@ -1,7 +1,6 @@
-import 'package:echology/pages/auth/auth_service.dart';
-import 'package:echology/widgets/Logo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:echology/widgets/Logo.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -23,7 +22,6 @@ class _Profile extends State<Profile> {
                 child: Text('Log out'),
                 onPressed: () {
                   Navigator.popAndPushNamed(context, '/login');
-                  AuthService.removeToken();
                 },
               ),
             ],

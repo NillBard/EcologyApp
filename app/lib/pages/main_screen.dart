@@ -1,7 +1,5 @@
 import 'package:echology/pages/profile.dart';
-import 'package:echology/pages/proscessing_map.dart';
 import 'package:echology/pages/blog_page.dart';
-import 'package:echology/pages/processing.dart';
 import 'package:echology/pages/scanner.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +10,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreen extends State<MainScreen> {
   int _selectedIndex = 2;
-  List<Widget> _widgetOptions = <Widget>[
-    ProcessingMap(),
+  final List<Widget> _widgetOptions = <Widget>[
     Scanner(),
     blogPage(),
     Profile()
@@ -61,7 +58,7 @@ class _MainScreen extends State<MainScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTap,
         selectedItemColor: Colors.green,
-        unselectedIconTheme: IconThemeData(color: Colors.grey),
+        unselectedIconTheme: const IconThemeData(color: Colors.grey),
       ),
     );
   }
