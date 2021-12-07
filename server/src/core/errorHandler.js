@@ -2,9 +2,13 @@ module.exports = {
   errorHandler() {
     return (err, _, res, next) => {
       if (err) {
-        console.error(err.message)
+        console.error(
+          `\x1b[36m[${new Date().toLocaleTimeString()}] \x1b[31mError: ${
+            err.message
+          }`,
+        )
         if (err.code === 500 || !err.code) {
-          console.error(err.stack)
+          console.error('\x1b[31m', err.stack)
         }
         res.json({
           status: typeof err.code === 'number' ? err.code : 500,

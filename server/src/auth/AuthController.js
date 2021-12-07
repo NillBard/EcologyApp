@@ -8,22 +8,28 @@ const { Exception, ExceptionTypes } = require('../core/Exception')
 const registerBody = yup.object().shape({
   name: yup
     .string()
-    .required()
+    .required('Name is required')
     .min(3, `Name must be at least 3 characters long`),
-  email: yup.string().email().required(),
+  email: yup
+    .string()
+    .email('Email must be valid')
+    .required('Email is required'),
   password: yup
     .string()
-    .required()
+    .required('Password is required')
     .min(6, `Password must be at least 6 characters long`),
 })
 
 const loginBody = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().required(),
+  email: yup
+    .string()
+    .email('Email must be valid')
+    .required('Email is required'),
+  password: yup.string().required('Password is required'),
 })
 
 const authenticateBody = yup.object().shape({
-  token: yup.string().required(),
+  token: yup.string().required('Refresh token is required'),
 })
 
 module.exports = {

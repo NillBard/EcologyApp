@@ -2,11 +2,15 @@ module.exports = {
   logger() {
     return (req, _, next) => {
       console.log(
-        `[${new Date().toLocaleTimeString()}]`,
-        `${req.method} ${req.path}`,
+        `\x1b[36m[${new Date().toLocaleTimeString()}]`,
+        `\x1b[33m${req.method} ${req.path}`,
       )
       if (req.body) {
-        console.log(`[Body] ${JSON.stringify(req.body)}`)
+        console.log(
+          `\x1b[36m[${new Date().toLocaleTimeString()}] \x1b[33mBody: ${JSON.stringify(
+            req.body,
+          )}`,
+        )
       }
       next()
     }
