@@ -59,7 +59,8 @@ class AuthModel extends ChangeNotifier {
       error = null;
       isLoading = true;
 
-      var data = await _http.post('/auth/register', AuthResponse.fromJson,
+      var data = await _http.post('/auth/register', 
+        AuthResponse.fromJson,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -87,7 +88,8 @@ class AuthModel extends ChangeNotifier {
 
     try {
       error = null;
-      var data = await _http.post('/auth/login', AuthResponse.fromJson,
+      var data = await _http.post('/auth/login', 
+        AuthResponse.fromJson,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -114,7 +116,8 @@ class AuthModel extends ChangeNotifier {
 
     try {
       var token = _storage!.getString("refreshToken");
-      var data = await _http.post('/auth/refresh-tokens', AuthResponse.fromJson,
+      var data = await _http.post('/auth/refresh-tokens', 
+        AuthResponse.fromJson,
           headers: {'content-type': 'application/json'},
           body: jsonEncode({'token': token}));
 
