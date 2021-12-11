@@ -31,32 +31,34 @@ class _SignUpState extends State<Login> {
   Widget build(BuildContext context) {
     return Consumer<AuthModel>(builder: (_, auth, __) {
       return Scaffold(
-        body: Container(
-            height: 550,
-            margin: const EdgeInsets.only(top: 75),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    AuthLogo(),
-                    SizedBox(
-                      width: 300,
-                      height: 35,
-                      child: Text(auth.error ?? ''),
-                    ),
-                    formField(_email, _handleEmailChange, "Email"),
-                    formField(
-                        _password, _handlePasswordChange, "Password", true),
-                    button(() {
-                      auth.login(_email, _password);
-                    }, "Login"),
-                    _showSignUpButton(context)
-                  ],
+        body: SingleChildScrollView(
+          child: Container(
+              height: 550,
+              margin: const EdgeInsets.only(top: 75),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      AuthLogo(),
+                      SizedBox(
+                        width: 300,
+                        height: 35,
+                        child: Text(auth.error ?? ''),
+                      ),
+                      formField(_email, _handleEmailChange, "Email"),
+                      formField(
+                          _password, _handlePasswordChange, "Password", true),
+                      button(() {
+                        auth.login(_email, _password);
+                      }, "Login"),
+                      _showSignUpButton(context)
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              )),
+        ),
       );
     });
   }
