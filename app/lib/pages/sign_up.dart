@@ -7,7 +7,9 @@ import 'package:echology/models/auth.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  final AuthModel _authModel;
+
+  const SignUp(this._authModel, {Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -34,6 +36,10 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _password = value;
     });
+  }
+
+  void _handleSubmit() {
+    widget._authModel.register(_name, _email, _password);
   }
 
   @override
@@ -64,9 +70,7 @@ class _SignUpState extends State<SignUp> {
                       formField(_name, _handleNameChange, "Name"),
                       formField(_password, _handlePasswordChange, "Password",
                           isPassword: true),
-                      button(() {
-                        auth.register(_name, _email, _password);
-                      }, "Sign Up"),
+                      button(_handleSubmit, "Sign Up"),
                       _showLogInButton(context)
                     ],
                   ),

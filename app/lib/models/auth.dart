@@ -42,10 +42,6 @@ class AuthModel extends BaseModel {
     await _storage.setString("refreshToken", token);
   }
 
-  void _enableRefreshing() {
-    Future.delayed(const Duration(minutes: 30), authenticate);
-  }
-
   void register(String name, String email, String password) {
     performEffect(() async {
       var data = await _http.post('/auth/register', AuthResponse.fromJson,
@@ -62,7 +58,6 @@ class AuthModel extends BaseModel {
       await _setRefreshToken(data.refreshToken);
       user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
-      _enableRefreshing();
     });
   }
 
@@ -81,7 +76,6 @@ class AuthModel extends BaseModel {
       await _setRefreshToken(data.refreshToken);
       user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
-      _enableRefreshing();
     });
   }
 
@@ -95,7 +89,6 @@ class AuthModel extends BaseModel {
       _http.setToken(data.accessToken);
       await _setRefreshToken(data.refreshToken);
       isAuthenticated = true;
-      _enableRefreshing();
       notifyListeners();
     } catch (_) {
       isAuthenticated = false;

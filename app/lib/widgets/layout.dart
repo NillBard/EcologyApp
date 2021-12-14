@@ -5,10 +5,24 @@ import 'package:echology/pages/sign_up.dart';
 import 'package:echology/pages/login.dart';
 import 'package:echology/models/auth.dart';
 
-class Layout extends StatelessWidget {
+class Layout extends StatefulWidget {
   final AuthModel authModel;
 
   const Layout({required this.authModel, Key? key}) : super(key: key);
+
+  @override
+  _LayoutState createState() => _LayoutState();
+}
+
+class _LayoutState extends State<Layout> {
+  Future? _authFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _authFuture = widget.authModel.authenticate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,20 +30,20 @@ class Layout extends StatelessWidget {
         title: 'Ecology App',
         theme: ThemeData(primarySwatch: Colors.green),
         home: FutureBuilder(
-            future: authModel.authenticate(),
-            builder: (_, snapshot) {
-              if (authModel.isLoading == true) {
+            future: _authFuture,
+            builder: (_, __) {
+              if (widget.authModel.isLoading) {
                 return const CircularProgressIndicator();
-              } else if (authModel.isAuthenticated) {
+              } else if (widget.authModel.isAuthenticated) {
                 return MainScreen();
               } else {
-                return const Login();
+                return Login(widget.authModel);
               }
             }),
         routes: {
           '/home': (_) => MainScreen(),
-          '/login': (_) => const Login(),
-          '/register': (_) => const SignUp(),
+          '/login': (_) => Login(widget.authModel),
+          '/register': (_) => SignUp(widget.authModel),
         });
   }
 }

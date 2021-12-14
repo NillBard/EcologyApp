@@ -4,10 +4,14 @@ Widget button(void Function() onPressed, String text) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
         fixedSize: const Size.fromWidth(400),
+        padding: const EdgeInsets.symmetric(vertical: 15),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(30.0),
         ),
       ),
       onPressed: onPressed,
-      child: Text(text));
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 24),
+      ));
 }
