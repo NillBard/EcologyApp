@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:echology/widgets/auth_logo.dart';
+import 'package:echology/widgets/form_field.dart';
+import 'package:echology/widgets/button.dart';
 import 'package:echology/models/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -41,15 +43,15 @@ class _SignUpState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      AuthLogo(),
+                      const AuthLogo(),
                       SizedBox(
                         width: 300,
                         height: 35,
                         child: Text(auth.error ?? ''),
                       ),
                       formField(_email, _handleEmailChange, "Email"),
-                      formField(
-                          _password, _handlePasswordChange, "Password", true),
+                      formField(_password, _handlePasswordChange, "Password",
+                          isPassword: true),
                       button(() {
                         auth.login(_email, _password);
                       }, "Login"),
@@ -62,28 +64,6 @@ class _SignUpState extends State<Login> {
       );
     });
   }
-}
-
-Widget formField(String value, void Function(String) onChanged, String hint,
-    [bool isPassword = false]) {
-  return TextFormField(
-      onChanged: onChanged,
-      obscureText: isPassword,
-      decoration: InputDecoration(
-          hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(40))));
-}
-
-Widget button(void Function() onPressed, String text) {
-  return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: const Size.fromWidth(400),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Text(text));
 }
 
 Widget _showSignUpButton(context) {

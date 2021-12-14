@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
-import 'package:echology/helper/http.dart';
+import 'package:echology/models/base.dart';
+import 'package:echology/helpers/http.dart';
 
 class AuthResponse {
   String accessToken;
@@ -30,37 +30,25 @@ class User {
   }
 }
 
-class AuthModel extends ChangeNotifier {
+class AuthModel extends BaseModel {
   final Http _http;
-  SharedPreferences? _storage;
+  final SharedPreferences _storage;
   bool isAuthenticated = false;
   User? user;
-  String? error;
-  bool isLoading = false;
 
-  AuthModel(this._http);
-
-  Future init() async {
-    _storage = await SharedPreferences.getInstance();
-  }
+  AuthModel(this._http, this._storage);
 
   Future<dynamic> _setRefreshToken(String token) async {
-    await _storage!.setString("refreshToken", token);
+    await _storage.setString("refreshToken", token);
   }
 
   void _enableRefreshing() {
     Future.delayed(const Duration(minutes: 30), authenticate);
   }
 
-  Future<dynamic> register(String name, String email, String password) async {
-    if (_storage == null) throw Exception("Service is not initialized");
-
-    try {
-      error = null;
-      isLoading = true;
-
-      var data = await _http.post('/auth/register', 
-        AuthResponse.fromJson,
+  void register(String name, String email, String password) {
+    performEffect(() async {
+      var data = await _http.post('/auth/register', AuthResponse.fromJson,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -75,21 +63,12 @@ class AuthModel extends ChangeNotifier {
       user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
       _enableRefreshing();
-    } catch (err) {
-      error = err.toString();
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    });
   }
 
-  Future<dynamic> login(String email, String password) async {
-    if (_storage == null) throw Exception("Service is not initialized");
-
-    try {
-      error = null;
-      var data = await _http.post('/auth/login', 
-        AuthResponse.fromJson,
+  void login(String email, String password) {
+    performEffect(() async {
+      var data = await _http.post('/auth/login', AuthResponse.fromJson,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -103,28 +82,23 @@ class AuthModel extends ChangeNotifier {
       user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
       _enableRefreshing();
-    } catch (err) {
-      error = err.toString();
-    } finally {
-      notifyListeners();
-      isLoading = false;
-    }
+    });
   }
 
   Future<dynamic> authenticate() async {
-    if (_storage == null) throw Exception("Service is not initialized");
-
     try {
-      var token = _storage!.getString("refreshToken");
-      var data = await _http.post('/auth/refresh-tokens', 
-        AuthResponse.fromJson,
+      var token = _storage.getString("refreshToken");
+      var data = await _http.post('/auth/refresh-tokens', AuthResponse.fromJson,
           headers: {'content-type': 'application/json'},
           body: jsonEncode({'token': token}));
 
       _http.setToken(data.accessToken);
       await _setRefreshToken(data.refreshToken);
+      isAuthenticated = true;
       _enableRefreshing();
       notifyListeners();
-    } finally {}
+    } catch (_) {
+      isAuthenticated = false;
+    }
   }
 }
