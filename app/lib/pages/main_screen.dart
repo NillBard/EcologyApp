@@ -4,6 +4,7 @@ import 'package:echology/models/user.dart';
 import 'package:echology/pages/profile.dart';
 import 'package:echology/pages/blog_page.dart';
 import 'package:echology/pages/scanner.dart';
+import 'package:echology/pages/proscessing_map.dart';
 
 class MainScreen extends StatefulWidget {
   final UserModel userModel;
@@ -15,13 +16,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreen extends State<MainScreen> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 3;
   late List<Widget> _widgetOptions;
 
   @override
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
+      ProcessingMap(),
       Scanner(),
       const blogPage(),
       Profile(widget.userModel)
