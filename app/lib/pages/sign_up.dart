@@ -44,53 +44,57 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthModel>(builder: (_, auth, __) {
-      return Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-              height: 550,
-              margin: const EdgeInsets.only(top: 75),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 60),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      const AuthLogo(),
-                      SizedBox(
-                        width: 300,
-                        height: 35,
-                        child: Text(
-                          auth.error ?? '',
-                          style: const TextStyle(color: Colors.red),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      formField(_email, _handleEmailChange, "Email"),
-                      formField(_name, _handleNameChange, "Name"),
-                      formField(_password, _handlePasswordChange, "Password",
-                          isPassword: true),
-                      button(_handleSubmit, "Sign Up"),
-                      _showLogInButton(context)
-                    ],
-                  ),
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              const AuthLogo(),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  widget._authModel.error ?? '',
+                  style: const TextStyle(color: Colors.red, fontSize: 16),
                 ),
-              )),
-        ),
-      );
-    });
+              ),
+              Container(
+                  margin: const EdgeInsets.only(bottom: 15),
+                  child: formField(_email, _handleEmailChange, "Email",
+                      type: TextInputType.emailAddress)),
+              Container(
+                margin: const EdgeInsets.only(bottom: 15),
+                child: formField(_name, _handleNameChange, "Name"),
+              ),
+              formField(_password, _handlePasswordChange, "Password",
+                  isPassword: true),
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  child: button(_handleSubmit, "Sign Up")),
+              _showLoginButton(context, () {
+                widget._authModel.error = null;
+                Navigator.pushNamed(context, '/login');
+              })
+            ],
+          ),
+        )),
+      ),
+    );
   }
 }
 
-Widget _showLogInButton(context) {
+Widget _showLoginButton(context, onPress) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       const Text('Already have an account? ',
-          style: TextStyle(color: Colors.grey)),
+          style: TextStyle(color: Colors.grey, fontSize: 16)),
       TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/login'),
-          child: const Text('LogIn', style: TextStyle(color: Colors.blue)))
+          onPressed: onPress,
+          child: const Text('Login',
+              style: TextStyle(color: Colors.green, fontSize: 16)))
     ],
   );
 }

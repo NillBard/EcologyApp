@@ -61,7 +61,10 @@ class _LoginState extends State<Login> {
               Container(
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   child: button(_handleSubmit, "Login")),
-              _showSignUpButton(context)
+              _showSignUpButton(context, () {
+                widget._authModel.error = null;
+                Navigator.pushNamed(context, '/register');
+              })
             ],
           ),
         )),
@@ -70,14 +73,14 @@ class _LoginState extends State<Login> {
   }
 }
 
-Widget _showSignUpButton(context) {
+Widget _showSignUpButton(context, onPress) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       const Text('Don\'t have an account? ',
           style: TextStyle(color: Colors.grey, fontSize: 16)),
       TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/register'),
+          onPressed: onPress,
           child: const Text('SignUp',
               style: TextStyle(color: Colors.green, fontSize: 16)))
     ],

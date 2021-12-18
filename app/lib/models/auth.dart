@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 
 import 'package:echology/models/base.dart';
 import 'package:echology/helpers/http.dart';
@@ -18,25 +18,13 @@ class AuthResponse {
   }
 }
 
-class User {
-  int id;
-  String name;
-  String email;
-
-  User(this.id, this.name, this.email);
-
-  factory User.fromJson(dynamic json) {
-    return User(json['id'], json['name'], json['email']);
-  }
-}
-
 class AuthModel extends BaseModel {
   final Http _http;
   final SharedPreferences _storage;
+  final GlobalKey<NavigatorState> _navigator;
   bool isAuthenticated = false;
-  User? user;
 
-  AuthModel(this._http, this._storage);
+  AuthModel(this._http, this._storage, this._navigator);
 
   Future<dynamic> _setRefreshToken(String token) async {
     await _storage.setString("refreshToken", token);
@@ -56,8 +44,8 @@ class AuthModel extends BaseModel {
 
       _http.setToken(data.accessToken);
       await _setRefreshToken(data.refreshToken);
-      user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
+      _navigator.currentState?.pushNamed('/home');
     });
   }
 
@@ -74,8 +62,8 @@ class AuthModel extends BaseModel {
 
       _http.setToken(data.accessToken);
       await _setRefreshToken(data.refreshToken);
-      user = User.fromJson(Jwt.parseJwt(data.accessToken));
       isAuthenticated = true;
+      _navigator.currentState?.pushNamed('/home');
     });
   }
 
@@ -93,5 +81,13 @@ class AuthModel extends BaseModel {
     } catch (_) {
       isAuthenticated = false;
     }
+  }
+
+  void logOut() {
+    performEffect(() async {
+      _storage.remove("refreshToken");
+      isAuthenticated = false;
+      _navigator.currentState?.pushNamed('/login');
+    });
   }
 }

@@ -7,7 +7,9 @@ module.exports = {
         try {
           await schema.validate(req.body)
         } catch (err) {
-          next(new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0]))
+          return next(
+            new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0]),
+          )
         }
       }
 

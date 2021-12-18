@@ -1,20 +1,32 @@
+import 'package:flutter/material.dart';
+
+import 'package:echology/models/user.dart';
 import 'package:echology/pages/profile.dart';
 import 'package:echology/pages/blog_page.dart';
 import 'package:echology/pages/scanner.dart';
-import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
+  final UserModel userModel;
+
+  const MainScreen(this.userModel, {Key? key}) : super(key: key);
+
   @override
   _MainScreen createState() => _MainScreen();
 }
 
 class _MainScreen extends State<MainScreen> {
   int _selectedIndex = 2;
-  final List<Widget> _widgetOptions = <Widget>[
-    Scanner(),
-    blogPage(),
-    Profile()
-  ];
+  late List<Widget> _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      Scanner(),
+      const blogPage(),
+      Profile(widget.userModel)
+    ];
+  }
 
   void _onItemTap(int index) {
     setState(() {
