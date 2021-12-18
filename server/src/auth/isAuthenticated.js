@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
 
+const { db } = require('../core/db')
 const { Exception, ExceptionTypes } = require('../core/Exception')
 
 module.exports = {
-  isAuthenticated(req, _, next) {
+  async isAuthenticated(req, _, next) {
     const token =
       req.query.token || req.headers.authorization?.split('Bearer')[1]?.trim()
 
@@ -12,7 +13,11 @@ module.exports = {
     }
 
     try {
-      jwt.verify(token, process.env.JWT_SECRET)
+      const { id } = jwt.verify(token, process.env.JWT_SECRET)
+      const user = await db.user.findUnique({ where: { id } })
+
+      delete user.password
+      req.user = user
       next()
     } catch (err) {
       if (err instanceof jwt.TokenExpiredError) {

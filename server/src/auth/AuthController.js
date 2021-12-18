@@ -1,36 +1,8 @@
-const yup = require('yup')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const { Controller } = require('../core/Controller')
 const { Exception, ExceptionTypes } = require('../core/Exception')
-
-const registerBody = yup.object().shape({
-  name: yup
-    .string()
-    .required('Name is required')
-    .min(3, `Name must be at least 3 characters long`),
-  email: yup
-    .string()
-    .email('Email must be valid')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(6, `Password must be at least 6 characters long`),
-})
-
-const loginBody = yup.object().shape({
-  email: yup
-    .string()
-    .email('Email must be valid')
-    .required('Email is required'),
-  password: yup.string().required('Password is required'),
-})
-
-const authenticateBody = yup.object().shape({
-  token: yup.string().required('Refresh token is required'),
-})
 
 module.exports = {
   AuthController: class extends Controller {
@@ -47,12 +19,6 @@ module.exports = {
     }
 
     async register(req, res) {
-      try {
-        await registerBody.validate(req.body)
-      } catch (err) {
-        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
-      }
-
       const candidate = await this.entity.findUnique({
         where: { email: req.body.email },
       })
@@ -79,12 +45,6 @@ module.exports = {
     }
 
     async login(req, res) {
-      try {
-        await loginBody.validate(req.body)
-      } catch (err) {
-        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
-      }
-
       const user = await this.entity.findUnique({
         where: { email: req.body.email },
       })
@@ -116,12 +76,6 @@ module.exports = {
     }
 
     async refreshTokens(req, res) {
-      try {
-        await authenticateBody.validate(req.body)
-      } catch (err) {
-        throw new Exception(ExceptionTypes.UnprocessableEntity, err.errors[0])
-      }
-
       try {
         const { id } = jwt.verify(req.body.token, process.env.JWT_SECRET)
         const user = await this.entity.findUnique({ where: { id } })
