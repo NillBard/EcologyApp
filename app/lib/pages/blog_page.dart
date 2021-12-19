@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class blogPage extends StatelessWidget {
-  const blogPage({Key? key}) : super(key: key);
+class BlogPage extends StatelessWidget {
+  const BlogPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 50),
+        padding: const EdgeInsets.symmetric(vertical: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 40),
-              child: Text(
+              margin: const EdgeInsets.only(left: 40),
+              child: const Text(
                 "Blog",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -22,7 +22,7 @@ class blogPage extends StatelessWidget {
                 ),
               ),
             ),
-            article_block_list(),
+            const ArticleBlockList(),
           ],
         ),
       ),
@@ -30,18 +30,17 @@ class blogPage extends StatelessWidget {
   }
 }
 
-class article_block_list extends StatelessWidget {
-  const article_block_list({Key? key}) : super(key: key);
+class ArticleBlockList extends StatelessWidget {
+  const ArticleBlockList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const <Widget>[
           ArticleBlock(),
           ArticleBlock(),
-        ]));
+        ]);
   }
 }
 
@@ -51,18 +50,18 @@ class ArticleBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(30),
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.all(30),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 120,
       width: 90,
       decoration: BoxDecoration(
         border: Border.all(),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        children: const [
           Text(
             'Article',
             textAlign: TextAlign.left,

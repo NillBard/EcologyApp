@@ -3,33 +3,33 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Http {
-  final String _baseURL;
-  final Map<String, String> _headers = {};
+  Http({required this.baseUrl});
 
-  Http(this._baseURL);
+  final String baseUrl;
+  final Map<String, String> _headers = {};
 
   _parseJson(String body) {
     var json = jsonDecode(body);
 
-    if (json['status'] >= 300) {
+    if (json['error'] != null) {
       throw json['error']['message'];
     } else {
       return json['data'];
     }
   }
 
-  Future<T> get<T>(String path, T Function(dynamic) factory,
+  Future<T> get<T>(String path, T Function(Map<String, dynamic>) factory,
       {Map<String, String>? headers = const {}}) async {
-    var res = await http.get(Uri.parse('$_baseURL$path'),
+    var res = await http.get(Uri.parse('$baseUrl$path'),
         headers: {}
           ..addAll(_headers)
           ..addAll(headers!));
     return factory(_parseJson(res.body));
   }
 
-  Future<T> post<T>(String path, T Function(dynamic) factory,
+  Future<T> post<T>(String path, T Function(Map<String, dynamic>) factory,
       {Map<String, String>? headers, Object? body}) async {
-    var res = await http.post(Uri.parse('$_baseURL$path'),
+    var res = await http.post(Uri.parse('$baseUrl$path'),
         headers: {}
           ..addAll(_headers)
           ..addAll(headers!),

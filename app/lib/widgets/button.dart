@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget button(void Function() onPressed, String text) {
+Widget button({void Function()? onPressed, required String text}) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
         fixedSize: const Size.fromWidth(400),

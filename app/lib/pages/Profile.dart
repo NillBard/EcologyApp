@@ -1,55 +1,37 @@
-import 'package:echology/models/user.dart';
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:echology/widgets/Logo.dart';
+import 'package:echology/providers/auth.dart';
 
-class Profile extends StatefulWidget {
-  final UserModel userModel;
-
-  const Profile(this.userModel, {Key? key}) : super(key: key);
-
-  @override
-  _Profile createState() => _Profile();
-}
-
-class _Profile extends State<Profile> {
-  Future? _userFuture;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _userFuture = widget.userModel.fetchUser();
-  }
+class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-          future: _userFuture,
-          builder: (_, __) {
-            if (widget.userModel.isLoading || widget.userModel.user == null) {
-              return const CircularProgressIndicator();
-            } else {
-              return Center(
-                child: Column(
-                  children: <Widget>[
-                    const Logo(),
-                    profileInfo(
-                        widget.userModel.user!.name, widget.userModel.user!.id),
-                    const LsitTypeTrash(),
-                    TextButton(
-                      child: const Text('Log out'),
-                      onPressed: () {
-                        Navigator.popAndPushNamed(context, '/login');
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
-    );
+    return Consumer<AuthState>(builder: (_, auth, __) {
+      if (auth.user != null) {
+        return Scaffold(
+            body: Center(
+          child: Column(
+            children: <Widget>[
+              const Logo(),
+              profileInfo(auth.user.name, auth.user.id),
+              const LsitTypeTrash(),
+              TextButton(
+                child: const Text('Log out'),
+                onPressed: () {
+                  auth.logOut();
+                },
+              ),
+            ],
+          ),
+        ));
+      } else {
+        return Container();
+      }
+    });
   }
 }
 

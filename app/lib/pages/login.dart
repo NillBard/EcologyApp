@@ -1,75 +1,65 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:echology/widgets/auth_logo.dart';
 import 'package:echology/widgets/form_field.dart';
 import 'package:echology/widgets/button.dart';
-import 'package:echology/models/auth.dart';
+import 'package:echology/providers/login.dart';
+import 'package:echology/providers/auth.dart';
 
-class Login extends StatefulWidget {
-  final AuthModel _authModel;
-
-  const Login(this._authModel, {Key? key}) : super(key: key);
-
-  @override
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  String _email = '';
-  String _password = '';
-
-  void _handleEmailChange(String value) {
-    setState(() {
-      _email = value;
-    });
-  }
-
-  void _handlePasswordChange(String value) {
-    setState(() {
-      _password = value;
-    });
-  }
-
-  void _handleSubmit() {
-    widget._authModel.login(_email, _password);
-  }
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              const AuthLogo(),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  widget._authModel.error ?? '',
-                  style: const TextStyle(color: Colors.red, fontSize: 16),
-                ),
-              ),
-              Container(
-                  margin: const EdgeInsets.only(bottom: 15),
-                  child: formField(_email, _handleEmailChange, "Email",
-                      type: TextInputType.emailAddress)),
-              formField(_password, _handlePasswordChange, "Password",
-                  isPassword: true),
-              Container(
+    return Consumer2<LoginForm, AuthState>(builder: (_, form, auth, __) {
+      if (auth.user != null) {
+        Future.delayed(const Duration(milliseconds: 1), () {
+          Navigator.pushNamed(context, '/home');
+        });
+      }
+
+      return Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                const AuthLogo(),
+                Container(
                   margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: button(_handleSubmit, "Login")),
-              _showSignUpButton(context, () {
-                widget._authModel.error = null;
-                Navigator.pushNamed(context, '/register');
-              })
-            ],
-          ),
-        )),
-      ),
-    );
+                  child: Text(
+                    auth.error ?? '',
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(bottom: 15),
+                    child: formField(form.email, form.setEmail, "Email",
+                        type: TextInputType.emailAddress)),
+                formField(form.password, form.setPassword, "Password",
+                    isPassword: true),
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: button(
+                        text: "Login",
+                        onPressed: () {
+                          auth.login(
+                              email: form.email, password: form.password);
+                        })),
+                _showSignUpButton(context, () {
+                  auth.clearError();
+                  Navigator.pushNamed(context, '/register');
+                })
+              ],
+            ),
+          )),
+        ),
+      );
+    });
   }
 }
 

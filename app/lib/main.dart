@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
-import 'widgets/layout.dart';
-import 'models/auth.dart';
-import 'models/user.dart';
+import 'pages/login.dart';
+import 'pages/main_screen.dart';
+import 'pages/sign_up.dart';
 import 'helpers/http.dart';
+import 'providers/login.dart';
+import 'providers/sign_up.dart';
+import 'providers/auth.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env.local");
@@ -17,35 +20,37 @@ Future main() async {
     throw Exception("API_URL must be provided in env vars");
   }
 
-  var http = Http(baseUrl);
+  var http = Http(baseUrl: baseUrl);
   var storage = await SharedPreferences.getInstance();
-  var navigator = GlobalKey<NavigatorState>();
-  var authModel = AuthModel(http, storage, navigator);
-  var userModel = UserModel(http);
+  var authState = AuthState(http: http, storage: storage);
+
+  await authState.authenticate();
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => authModel),
-      ChangeNotifierProvider(create: (_) => userModel)
+      ChangeNotifierProvider(create: (_) => authState),
+      ChangeNotifierProvider(create: (_) => LoginForm()),
+      ChangeNotifierProvider(create: (_) => SignUpForm())
     ],
-    child: MyApp(navigator),
+    child: const MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigator;
-
-  const MyApp(this.navigator, {Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthModel>(
-      builder: (context, authModel, _) {
-        return Layout(
-          authModel: authModel,
-          navigator: navigator,
-        );
-      },
-    );
+    return Consumer<AuthState>(builder: (_, auth, __) {
+      return MaterialApp(
+          title: 'Ecology App',
+          theme: ThemeData(primarySwatch: Colors.green),
+          initialRoute: auth.user != null ? '/home' : '/login',
+          routes: {
+            '/home': (_) => const MainScreen(),
+            '/login': (_) => const Login(),
+            '/register': (_) => const SignUp(),
+          });
+    });
   }
 }
