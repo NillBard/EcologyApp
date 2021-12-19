@@ -14,3 +14,10 @@ model User {
   password String @db.VarChar(255)
   exp      Int
 }
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  text      String
+}
