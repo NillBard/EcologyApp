@@ -3,26 +3,19 @@ const { Router } = require('express')
 const { rescue } = require('../core/rescue')
 const { ArticleController } = require('./ArticleController')
 
-const { articleSchema } = require('./articleSchema')
-
-const articleRoute = Router()
+const articleRouter = Router()
 const articleController = new ArticleController()
 
-articleRoute.post(
-  '/add-article',
-  rescue(articleController.addArticle.bind(articleController), articleSchema),
-)
-
-articleRoute.get(
+articleRouter.get(
   '/:id',
-  rescue(articleController.getArticle.bind(articleController)),
+  rescue(articleController.findOne.bind(articleController)),
 )
 
-articleRoute.get(
+articleRouter.get(
   '/',
-  rescue(articleController.getArticleList.bind(articleController)),
+  rescue(articleController.findAll.bind(articleController)),
 )
 
 module.exports = {
-  articleRoute,
+  articleRouter,
 }

@@ -7,4 +7,5 @@ docker run --env-file ${PWD}/.env.${MODE} \
            -p 543$(if [[ $MODE = 'test' ]]; then echo 2; else echo 1; fi):5432 \
            postgres:alpine && \
 sleep 5 && \
-npx dotenv -e ${PWD}/.env.${MODE} -- npx prisma db push
+npx dotenv -e ${PWD}/.env.${MODE} -- npx prisma db push && \
+npx dotenv -e ${PWD}/.env.${MODE} -- node ./src/core/seed.js

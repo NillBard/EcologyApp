@@ -1,9 +1,10 @@
-const { request } = require('./setup')
+const { server } = require('./fixture/server')
+const { authorize } = require('./fixture/authorize')
 
 describe('Auth', () => {
   describe('Unauthorized users', () => {
     it('POST /api/auth/register should create new user', done => {
-      request
+      server
         .post('/api/auth/register')
         .send({
           name: 'John Smith',
@@ -20,7 +21,7 @@ describe('Auth', () => {
     })
 
     it('POST /api/auth/login should sign user in', done => {
-      request
+      server
         .post('/api/auth/login')
         .send({ email: 'john@smith.uk', password: '123456' })
         .then(res => {
@@ -34,23 +35,16 @@ describe('Auth', () => {
   })
 
   describe('Authorized users', () => {
-    let refreshToken
+    let token
 
-    beforeEach(done => {
-      request
-        .post('/api/auth/login')
-        .send({ email: 'john@smith.uk', password: '123456' })
-        .then(res => {
-          refreshToken = res.body.data.refreshToken
-          done()
-        })
-        .catch(done)
+    beforeEach(async () => {
+      token = await authorize()
     })
 
     it('POST /api/auth/refresh-tokens should update pair of tokens', done => {
-      request
+      server
         .post('/api/auth/refresh-tokens')
-        .send({ token: refreshToken })
+        .send({ token })
         .then(res => {
           expect(res.body.status).toEqual(200)
           expect(typeof res.body.data.accessToken).toEqual('string')
