@@ -10,8 +10,7 @@ module.exports = {
         if (err.code === 500 || !err.code) {
           console.error('\x1b[31m', err.stack)
         }
-        res.json({
-          status: typeof err.code === 'number' ? err.code : 500,
+        res.status(typeof err.code === 'number' ? err.code : 500).json({
           error: { message: err.message },
         })
       } else {

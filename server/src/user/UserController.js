@@ -6,8 +6,8 @@ module.exports = {
       super('user')
     }
 
-    me(req, res) {
-      res.json({ status: 200, data: req.user })
+    me(req) {
+      return { status: 200, data: req.user }
     }
   },
 }

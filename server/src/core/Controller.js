@@ -6,34 +6,34 @@ module.exports = {
       this.entity = db[entityName]
     }
 
-    async findAll(_, res) {
+    async findAll() {
       const data = await this.entity.findMany()
-      res.json({ status: 200, data })
+      return { status: 200, data }
     }
 
-    async findOne(req, res) {
+    async findOne(req) {
       const data = await this.entity.findUnique({
         where: { id: Number(req.params.id) },
       })
-      res.json({ status: 200, data })
+      return { status: 200, data }
     }
 
-    async create(req, res) {
+    async create(req) {
       const data = await this.entity.create({ data: req.body })
-      res.json({ status: 201, data })
+      return { status: 201, data }
     }
 
-    async update(req, res) {
+    async update(req) {
       const data = await this.entity.update({
         where: { id: Number(req.params.id) },
         data: req.body,
       })
-      res.json({ status: 200, data })
+      return { status: 200, data }
     }
 
-    async delete(req, res) {
+    async delete(req) {
       await this.entity.delete({ where: { id: Number(req.params.id) } })
-      res.json({ status: 204 })
+      return { status: 204 }
     }
   },
 }

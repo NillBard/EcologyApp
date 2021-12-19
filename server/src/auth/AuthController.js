@@ -18,7 +18,7 @@ module.exports = {
       return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
     }
 
-    async register(req, res) {
+    async register(req) {
       const candidate = await this.entity.findUnique({
         where: { email: req.body.email },
       })
@@ -41,10 +41,10 @@ module.exports = {
         name: user.name,
       })
 
-      res.json({ status: 201, data: { accessToken, refreshToken } })
+      return { status: 201, data: { accessToken, refreshToken } }
     }
 
-    async login(req, res) {
+    async login(req) {
       const user = await this.entity.findUnique({
         where: { email: req.body.email },
       })
@@ -72,10 +72,10 @@ module.exports = {
         email: user.email,
       })
 
-      res.json({ status: 200, data: { accessToken, refreshToken } })
+      return { status: 200, data: { accessToken, refreshToken } }
     }
 
-    async refreshTokens(req, res) {
+    async refreshTokens(req) {
       try {
         const { id } = jwt.verify(req.body.token, process.env.JWT_SECRET)
         const user = await this.entity.findUnique({ where: { id } })
@@ -86,7 +86,7 @@ module.exports = {
           email: user.email,
         })
 
-        res.json({ status: 200, data: { accessToken, refreshToken } })
+        return { status: 200, data: { accessToken, refreshToken } }
       } catch (err) {
         if (err instanceof jwt.TokenExpiredError) {
           throw new Exception(ExceptionTypes.Unauthorized, 'Token expired')

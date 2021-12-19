@@ -14,7 +14,8 @@ module.exports = {
       }
 
       try {
-        await handler(req, res, next)
+        const payload = await handler(req, res, next)
+        res.status(payload.status).json({ data: payload.data })
       } catch (err) {
         next(err)
       }

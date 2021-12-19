@@ -13,8 +13,8 @@ describe('Article', () => {
       .get('/api/articles')
       .set('Authorization', `Bearer ${token}`)
       .then(res => {
-        expect(res.body.status).toEqual(200)
-        expect(res.body.data).toHaveLength(2)
+        expect(res.status).toEqual(200)
+        expect(res.body.data.length).toBeGreaterThan(0)
         expect(res.body.data[0].title).toBeDefined()
         expect(res.body.data[0].text).toBeDefined()
         done()
@@ -27,7 +27,7 @@ describe('Article', () => {
       .get('/api/articles')
       .set('Authorization', `Bearer ${token}`)
       .then(res => {
-        expect(res.body.status).toEqual(200)
+        expect(res.status).toEqual(200)
         expect(res.body.data[0].text).toHaveLength(100)
         done()
       })
@@ -42,7 +42,7 @@ describe('Article', () => {
           .get(`/api/articles/${res.body.data[0].id}`)
           .set('Authorization', `Bearer ${token}`)
           .then(res => {
-            expect(res.body.status).toEqual(200)
+            expect(res.status).toEqual(200)
             expect(res.body.data.title).toBeDefined()
             expect(res.body.data.text).toBeDefined()
             done()
