@@ -16,12 +16,10 @@ class BaseProvider extends ChangeNotifier {
   performEffect(Future<void> Function() effect) async {
     try {
       _error = null;
-      _isLoading = true;
       await effect();
     } catch (err) {
       _error = err.toString();
     } finally {
-      _isLoading = false;
       notifyListeners();
     }
   }

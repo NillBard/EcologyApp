@@ -13,21 +13,22 @@ class Profile extends StatelessWidget {
     return Consumer<AuthState>(builder: (_, auth, __) {
       if (auth.user != null) {
         return Scaffold(
+            backgroundColor: Colors.white,
             body: Center(
-          child: Column(
-            children: <Widget>[
-              const Logo(),
-              profileInfo(auth.user.name, auth.user.id),
-              const LsitTypeTrash(),
-              TextButton(
-                child: const Text('Log out'),
-                onPressed: () {
-                  auth.logOut();
-                },
+              child: Column(
+                children: <Widget>[
+                  const Logo(),
+                  profileInfo(auth.user.name, auth.user.id),
+                  const LsitTypeTrash(),
+                  TextButton(
+                    child: const Text('Log out'),
+                    onPressed: () {
+                      auth.logOut();
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ));
       } else {
         return Container();
       }

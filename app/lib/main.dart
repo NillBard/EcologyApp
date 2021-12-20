@@ -1,3 +1,5 @@
+import 'package:ecology/di.dart';
+import 'package:ecology/providers/articles.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,12 +25,17 @@ Future main() async {
   var http = Http(baseUrl: baseUrl);
   var storage = await SharedPreferences.getInstance();
   var authState = AuthState(http: http, storage: storage);
+  var articlesState = ArticlesState(http: http);
 
   await authState.authenticate();
+
+  providers.registerSingleton<AuthState>(authState);
+  providers.registerSingleton<ArticlesState>(articlesState);
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => authState),
+      ChangeNotifierProvider(create: (_) => articlesState),
       ChangeNotifierProvider(create: (_) => LoginForm()),
       ChangeNotifierProvider(create: (_) => SignUpForm())
     ],
