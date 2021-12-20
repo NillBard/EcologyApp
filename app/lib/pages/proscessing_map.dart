@@ -12,6 +12,7 @@ class _ProcessingMap extends State<ProcessingMap> {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
+        center: LatLng(55.7499, 37.6262),
         zoom: 13.0,
       ),
       layers: [

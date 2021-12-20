@@ -1,9 +1,9 @@
+import 'package:echology/pages/recycling_tracker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:echology/models/user.dart';
 import 'package:echology/pages/profile.dart';
 import 'package:echology/pages/blog_page.dart';
-import 'package:echology/pages/scanner.dart';
 import 'package:echology/pages/proscessing_map.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,8 +23,8 @@ class _MainScreen extends State<MainScreen> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
+      RecyclingTracker(),
       ProcessingMap(),
-      Scanner(),
       const blogPage(),
       Profile(widget.userModel)
     ];
@@ -46,15 +46,15 @@ class _MainScreen extends State<MainScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.map,
+              Icons.repeat_on_rounded,
             ),
-            label: 'Map',
+            label: 'Recycling',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.qr_code_scanner_rounded,
+              Icons.map,
             ),
-            label: 'Scanner',
+            label: 'Map',
           ),
           BottomNavigationBarItem(
             icon: Icon(

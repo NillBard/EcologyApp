@@ -6,8 +6,9 @@ class blogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 50),
+      body: Center(
+          child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -25,6 +26,10 @@ class blogPage extends StatelessWidget {
             article_block_list(),
           ],
         ),
+      )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.post_add),
       ),
     );
   }
@@ -39,6 +44,11 @@ class article_block_list extends StatelessWidget {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+          ArticleBlock(),
+          ArticleBlock(),
+          ArticleBlock(),
+          ArticleBlock(),
+          ArticleBlock(),
           ArticleBlock(),
           ArticleBlock(),
         ]));
@@ -62,7 +72,7 @@ class ArticleBlock extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        children: <Widget>[
           Text(
             'Article',
             textAlign: TextAlign.left,
