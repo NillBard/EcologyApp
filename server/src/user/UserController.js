@@ -18,7 +18,7 @@ module.exports = {
         data: {
           ...data,
           exp: Object.keys(req.body)
-            .map(key => req.body[key] * 10)
+            .map(key => req.body[key])
             .reduce((acc, value) => acc + value, req.user.exp),
         },
       })

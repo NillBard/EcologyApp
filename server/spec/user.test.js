@@ -21,4 +21,22 @@ describe('User', () => {
       })
       .catch(done)
   })
+
+  it('POST /api/users/me/tracker should update user stats', done => {
+    server
+      .post('/api/users/me/tracker')
+      .send({ paper: 1, plastic: 1, electronic: 1, glass: 1, batteries: 1 })
+      .set('Authorization', `Bearer ${token}`)
+      .then(res => {
+        expect(res.status).toEqual(200)
+        expect(res.body.data).toMatchObject({
+          paper: 1,
+          plastic: 1,
+          electronic: 1,
+          glass: 1,
+          batteries: 1,
+        })
+        done()
+      })
+  })
 })
