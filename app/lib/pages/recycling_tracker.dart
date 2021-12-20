@@ -1,91 +1,132 @@
 import 'package:flutter/material.dart';
 
-class RecyclingTracker extends StatelessWidget {
+import '../widgets/Logo.dart';
+import '../widgets/button.dart';
+
+class RecyclingTracker extends StatefulWidget {
   const RecyclingTracker({Key? key}) : super(key: key);
+
+  @override
+  _RecyclingTrackerState createState() => _RecyclingTrackerState();
+}
+
+class _RecyclingTrackerState extends State<RecyclingTracker> {
+  int glassCounter = 0;
+  int paperCounter = 0;
+  int plasticCounter = 0;
+  int batteriesCounter = 0;
+  int electronicCounter = 0;
+
+  void _minusGlassCounter() {
+    setState(() {
+      glassCounter--;
+    });
+  }
+
+  void _plusGlassCounter() {
+    setState(() {
+      glassCounter++;
+    });
+  }
+
+  void _minusPaperCounter() {
+    setState(() {
+      paperCounter--;
+    });
+  }
+
+  void _plusPaperCounter() {
+    setState(() {
+      paperCounter++;
+    });
+  }
+
+  void _minusPlasticCounter() {
+    setState(() {
+      plasticCounter--;
+    });
+  }
+
+  void _plusPlasticrCounter() {
+    setState(() {
+      plasticCounter++;
+    });
+  }
+
+  void _minusBatteriesCounter() {
+    setState(() {
+      batteriesCounter--;
+    });
+  }
+
+  void _plusBatteriesCounter() {
+    setState(() {
+      batteriesCounter++;
+    });
+  }
+
+  void _minusElectronicrCounter() {
+    setState(() {
+      electronicCounter--;
+    });
+  }
+
+  void _plusElectronicCounter() {
+    setState(() {
+      electronicCounter++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(left: 40),
-              child: Text(
-                "Blog",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                ),
-              ),
-            ),
-            article_block_list(),
-          ],
-        ),
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.post_add),
-      ),
-    );
-  }
-}
-
-class article_block_list extends StatelessWidget {
-  const article_block_list({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-          ArticleBlock(),
-          ArticleBlock(),
-          ArticleBlock(),
-          ArticleBlock(),
-          ArticleBlock(),
-          ArticleBlock(),
-          ArticleBlock(),
-        ]));
-  }
-}
-
-class ArticleBlock extends StatelessWidget {
-  const ArticleBlock({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(30),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      height: 120,
-      width: 90,
-      decoration: BoxDecoration(
-        border: Border.all(),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
+        body: Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text(
-            'Article',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
-          ),
-          Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend quam adipiscing tortor vitae cursus non tellus...",
-              overflow: TextOverflow.fade)
+          const Logo(),
+          trackButton(
+              "Glass", glassCounter, _minusGlassCounter, _plusGlassCounter),
+          trackButton("Plastic", plasticCounter, _minusPlasticCounter,
+              _plusPlasticrCounter),
+          trackButton("Batteries", batteriesCounter, _minusBatteriesCounter,
+              _plusBatteriesCounter),
+          trackButton("Electronic", electronicCounter, _minusElectronicrCounter,
+              _plusElectronicCounter),
+          trackButton(
+              "Paper", paperCounter, _minusPaperCounter, _plusPaperCounter),
+          Container(
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              child: button(
+                  text: "Save",
+                  onPressed: () {
+                    print("save");
+                  })),
         ],
       ),
-    );
+    ));
   }
+}
+
+Widget trackButton(String name, counter, decrease, increase) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(name, style: const TextStyle(fontSize: 30)),
+      IconButton(
+        icon: const Icon(
+          Icons.remove_circle_outline,
+          size: 30,
+          color: Colors.red,
+        ),
+        onPressed: decrease,
+      ),
+      Text('$counter',
+          style: const TextStyle(color: Colors.green, fontSize: 30)),
+      IconButton(
+        icon:
+            const Icon(Icons.add_circle_outline, size: 30, color: Colors.green),
+        onPressed: increase,
+      )
+    ],
+  );
 }
