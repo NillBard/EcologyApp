@@ -1,3 +1,4 @@
+import 'package:ecology/pages/article.dart';
 import 'package:ecology/providers/articles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class _ArticlesState extends State<Articles> {
               future: _articleFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return Container();
                 } else {
                   return const ArticleBlockList();
                 }
@@ -56,7 +57,8 @@ class ArticleBlockList extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: articlesState.articles
-                  .map((article) => Article(
+                  .map((article) => ArticleItem(
+                        id: article.id,
                         title: article.title,
                         text: article.text,
                       ))
@@ -65,39 +67,50 @@ class ArticleBlockList extends StatelessWidget {
   }
 }
 
-class Article extends StatelessWidget {
-  const Article({required this.title, required this.text, Key? key})
+class ArticleItem extends StatelessWidget {
+  const ArticleItem(
+      {required this.id, required this.title, required this.text, Key? key})
       : super(key: key);
 
+  final int id;
   final String title;
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 32),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 120,
-      width: 90,
-      decoration: BoxDecoration(
-        border: Border.all(),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+    return InkWell(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Article(id: id)));
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 32),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
           ),
-          Text('$text...', overflow: TextOverflow.fade)
-        ],
-      ),
-    );
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 24,
+                    ),
+                  )),
+              Text(
+                '$text...',
+                overflow: TextOverflow.fade,
+                style: const TextStyle(fontSize: 16),
+              )
+            ],
+          ),
+        ));
   }
 }

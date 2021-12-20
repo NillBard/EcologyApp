@@ -16,7 +16,7 @@ class Login extends StatelessWidget {
     return Consumer2<LoginForm, AuthState>(builder: (_, form, auth, __) {
       if (auth.user != null) {
         Future.delayed(const Duration(milliseconds: 1), () {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/home');
         });
       }
 

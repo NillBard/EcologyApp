@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique @db.VarChar(255)
-  name      String @db.VarChar(255)
-  password  String @db.VarChar(255)
-  exp       Int
-  paper    Int
-  plastic   Int
-  glass     Int
-  electronic   Int
-  batteries Int
+  id         Int    @id @default(autoincrement())
+  email      String @unique @db.VarChar(255)
+  name       String @db.VarChar(255)
+  password   String @db.VarChar(255)
+  exp        Int
+  paper      Int
+  plastic    Int
+  glass      Int
+  electronic Int
+  batteries  Int
 }
 
 model Article {

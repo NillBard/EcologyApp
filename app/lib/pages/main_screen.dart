@@ -18,8 +18,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreen extends State<MainScreen> {
   int _selectedIndex = 3;
   final List<Widget> _widgetOptions = <Widget>[
-    RecyclingTracker(),
-    ProcessingMap(),
+    const RecyclingTracker(),
+    const ProcessingMap(),
     const Articles(),
     const Profile()
   ];
@@ -35,7 +35,7 @@ class _MainScreen extends State<MainScreen> {
     return Consumer<AuthState>(builder: (_, auth, __) {
       if (auth.user == null) {
         Future.delayed(const Duration(milliseconds: 1), () {
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushReplacementNamed(context, '/login');
         });
       }
 
@@ -53,7 +53,8 @@ class _MainScreen extends State<MainScreen> {
             BottomNavigationBarItem(
               backgroundColor: Colors.transparent,
               icon: Icon(
-                Icons.refresh_sharp,
+                Icons.restore_from_trash_rounded,
+                size: 32,
               ),
               label: 'Tracker',
             ),
@@ -61,6 +62,7 @@ class _MainScreen extends State<MainScreen> {
               backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.map,
+                size: 32,
               ),
               label: 'Map',
             ),
@@ -68,6 +70,7 @@ class _MainScreen extends State<MainScreen> {
               backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.article,
+                size: 32,
               ),
               label: 'Article',
             ),
@@ -75,6 +78,7 @@ class _MainScreen extends State<MainScreen> {
               backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.person,
+                size: 32,
               ),
               label: 'Account',
             ),

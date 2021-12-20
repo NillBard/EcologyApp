@@ -1,134 +1,91 @@
+import 'package:ecology/providers/auth.dart';
+import 'package:ecology/providers/recycle.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/Logo.dart';
-import '../widgets/button.dart';
+import 'package:ecology/widgets/Logo.dart';
+import 'package:ecology/widgets/button.dart';
+import 'package:provider/provider.dart';
 
-class RecyclingTracker extends StatefulWidget {
+class RecyclingTracker extends StatelessWidget {
   const RecyclingTracker({Key? key}) : super(key: key);
 
   @override
-  _RecyclingTrackerState createState() => _RecyclingTrackerState();
-}
-
-class _RecyclingTrackerState extends State<RecyclingTracker> {
-  int glassCounter = 0;
-  int paperCounter = 0;
-  int plasticCounter = 0;
-  int batteriesCounter = 0;
-  int electronicCounter = 0;
-
-  void _minusGlassCounter() {
-    setState(() {
-      glassCounter--;
-    });
-  }
-
-  void _plusGlassCounter() {
-    setState(() {
-      glassCounter++;
-    });
-  }
-
-  void _minusPaperCounter() {
-    setState(() {
-      paperCounter--;
-    });
-  }
-
-  void _plusPaperCounter() {
-    setState(() {
-      paperCounter++;
-    });
-  }
-
-  void _minusPlasticCounter() {
-    setState(() {
-      plasticCounter--;
-    });
-  }
-
-  void _plusPlasticrCounter() {
-    setState(() {
-      plasticCounter++;
-    });
-  }
-
-  void _minusBatteriesCounter() {
-    setState(() {
-      batteriesCounter--;
-    });
-  }
-
-  void _plusBatteriesCounter() {
-    setState(() {
-      batteriesCounter++;
-    });
-  }
-
-  void _minusElectronicrCounter() {
-    setState(() {
-      electronicCounter--;
-    });
-  }
-
-  void _plusElectronicCounter() {
-    setState(() {
-      electronicCounter++;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60),
-      child: Column(
-        children: <Widget>[
-          const Logo(),
-          trackButton(
-              "Glass", glassCounter, _minusGlassCounter, _plusGlassCounter),
-          trackButton("Plastic", plasticCounter, _minusPlasticCounter,
-              _plusPlasticrCounter),
-          trackButton("Batteries", batteriesCounter, _minusBatteriesCounter,
-              _plusBatteriesCounter),
-          trackButton("Electronic", electronicCounter, _minusElectronicrCounter,
-              _plusElectronicCounter),
-          trackButton(
-              "Paper", paperCounter, _minusPaperCounter, _plusPaperCounter),
-          Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              child: button(
-                  text: "Save",
-                  onPressed: () {
-                    print("save");
-                  })),
-        ],
-      ),
-    )));
+    return Consumer2<RecycleState, AuthState>(
+        builder: (context, recycleState, authState, _) {
+      return Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            elevation: 0,
+            centerTitle: false,
+            title: const Text('Recycle',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+          ),
+          body: SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Column(
+              children: <Widget>[
+                const Logo(),
+                trackButton("Glass", recycleState.glass, recycleState.decrement,
+                    recycleState.increment,
+                    disabled: recycleState.glass == 0),
+                trackButton("Plastic", recycleState.plastic,
+                    recycleState.decrement, recycleState.increment,
+                    disabled: recycleState.plastic == 0),
+                trackButton("Batteries", recycleState.batteries,
+                    recycleState.decrement, recycleState.increment,
+                    disabled: recycleState.batteries == 0),
+                trackButton("Electronic", recycleState.electronic,
+                    recycleState.decrement, recycleState.increment,
+                    disabled: recycleState.electronic == 0),
+                trackButton("Paper", recycleState.paper, recycleState.decrement,
+                    recycleState.increment,
+                    disabled: recycleState.paper == 0),
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: button(
+                        text: "Save",
+                        onPressed: () async {
+                          await recycleState.submit();
+                          authState.fetchUser();
+                        })),
+              ],
+            ),
+          )));
+    });
   }
 }
 
-Widget trackButton(String name, counter, decrease, increase) {
+Widget trackButton(String name, counter, decrease, increase,
+    {bool disabled = false}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(name, style: const TextStyle(fontSize: 30)),
       const Spacer(),
       IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.remove_circle_outline,
           size: 30,
-          color: Colors.red,
+          color: disabled ? Colors.grey : Colors.red,
         ),
-        onPressed: decrease,
+        onPressed: disabled
+            ? null
+            : () {
+                decrease(name.toLowerCase());
+              },
       ),
       Text('$counter',
           style: const TextStyle(color: Colors.green, fontSize: 30)),
       IconButton(
         icon:
             const Icon(Icons.add_circle_outline, size: 30, color: Colors.green),
-        onPressed: increase,
+        onPressed: () {
+          increase(name.toLowerCase());
+        },
       )
     ],
   );

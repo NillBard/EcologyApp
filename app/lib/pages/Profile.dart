@@ -14,24 +14,34 @@ class Profile extends StatelessWidget {
       if (auth.user != null) {
         return Scaffold(
             backgroundColor: Colors.white,
-            body: Center(
+            body: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Column(children: <Widget>[
-              const Logo(),
-              profileInfo(auth.user.name, auth.user.id),
-              TypeTrashProcessing("Утилизированно пластика", auth.user.plastic),
-              TypeTrashProcessing("Утилизированно бумаги", auth.user.paper),
-              TypeTrashProcessing(
-                  "Утилизированно электроприборов", auth.user.electronic),
-              TypeTrashProcessing(
-                  "Утилизированно аккумуляторов", auth.user.batteries),
-              TypeTrashProcessing("Утилизированно стекла", auth.user.glass),
-              TextButton(
-                child: const Text('Log out'),
-                onPressed: () {
-                  auth.logOut();
-                },
-              ),
-            ])));
+                  const Logo(),
+                  profileInfo(auth.user.name, auth.user.id),
+                  Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Утилизировано:',
+                            style: TextStyle(fontSize: 20),
+                          )
+                        ],
+                      )),
+                  typeTrashProcessing("пластика", auth.user.plastic),
+                  typeTrashProcessing("бумаги", auth.user.paper),
+                  typeTrashProcessing("электроприборов", auth.user.electronic),
+                  typeTrashProcessing("аккумуляторов", auth.user.batteries),
+                  typeTrashProcessing("стекла", auth.user.glass),
+                  const Spacer(),
+                  TextButton(
+                      child:
+                          const Text('Log out', style: TextStyle(fontSize: 20)),
+                      onPressed: auth.logOut),
+                ])));
       } else {
         return Container();
       }
@@ -61,9 +71,9 @@ Widget profileInfo(String name, int id) {
   ]);
 }
 
-Widget TypeTrashProcessing(String typeTrash, int counter) {
+Widget typeTrashProcessing(String typeTrash, int counter) {
   return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 12, left: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -77,7 +87,7 @@ Widget TypeTrashProcessing(String typeTrash, int counter) {
             ),
           ),
           Text(
-            '$counter',
+            ' - $counter ед.',
             textAlign: TextAlign.left,
             style: const TextStyle(
               color: Colors.black,

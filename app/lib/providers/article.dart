@@ -9,11 +9,9 @@ class ArticleState extends BaseProvider {
   Http http;
   Article? _article;
 
-  get article => _article;
+  Article? get article => _article;
 
   Future<void> fetchArticle(int id) async {
-    performEffect(() async {
-      _article = await http.get('/articles/$id', Article.fromJson);
-    });
+    _article = await http.get('/articles/$id', Article.fromJson);
   }
 }

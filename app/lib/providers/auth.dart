@@ -17,8 +17,9 @@ class AuthState extends BaseProvider {
 
   get user => _user;
 
-  _fetchUser() async {
+  fetchUser() async {
     _user = await http.get('/users/me', User.fromJson);
+    notifyListeners();
   }
 
   register(
@@ -31,7 +32,7 @@ class AuthState extends BaseProvider {
 
       http.setToken(data.accessToken);
       await storage.setString('refreshToken', data.refreshToken);
-      await _fetchUser();
+      await fetchUser();
     });
   }
 
@@ -43,7 +44,7 @@ class AuthState extends BaseProvider {
 
       http.setToken(data.accessToken);
       await storage.setString('refreshToken', data.refreshToken);
-      await _fetchUser();
+      await fetchUser();
     });
   }
 
@@ -57,7 +58,7 @@ class AuthState extends BaseProvider {
 
         http.setToken(data.accessToken);
         await storage.setString('refreshToken', data.refreshToken);
-        await _fetchUser();
+        await fetchUser();
       } catch (_) {}
     }
   }

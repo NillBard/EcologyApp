@@ -7,9 +7,20 @@ module.exports = {
     }
 
     async tracker(req) {
+      const data = {}
+
+      Object.keys(req.body).forEach(key => {
+        data[key] = req.user[key] + req.body[key]
+      })
+
       const user = await this.entity.update({
         where: { id: Number(req.user.id) },
-        data: req.body,
+        data: {
+          ...data,
+          exp: Object.keys(req.body)
+            .map(key => req.body[key] * 10)
+            .reduce((acc, value) => acc + value, req.user.exp),
+        },
       })
 
       return { status: 200, data: user }

@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         height: 150,
         width: 150,
-        margin: const EdgeInsets.only(top: 150),
+        // margin: const EdgeInsets.only(top: 150),
         child: InputDecorator(
           decoration: const InputDecoration(
             border: OutlineInputBorder(
