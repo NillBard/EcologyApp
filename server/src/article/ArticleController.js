@@ -6,15 +6,15 @@ module.exports = {
       super('article')
     }
 
-    async findAll(_, res) {
+    async findAll() {
       const data = await this.entity.findMany()
-      res.json({
+      return {
         status: 200,
         data: data.map(article => ({
           ...article,
           text: article.text.slice(0, 100),
         })),
-      })
+      }
     }
   },
 }

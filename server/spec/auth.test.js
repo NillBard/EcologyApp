@@ -12,7 +12,7 @@ describe('Auth', () => {
           password: '123456',
         })
         .then(res => {
-          expect(res.body.status).toEqual(201)
+          expect(res.status).toEqual(201)
           expect(typeof res.body.data.accessToken).toEqual('string')
           expect(typeof res.body.data.refreshToken).toEqual('string')
           done()
@@ -25,7 +25,7 @@ describe('Auth', () => {
         .post('/api/auth/login')
         .send({ email: 'john@smith.uk', password: '123456' })
         .then(res => {
-          expect(res.body.status).toEqual(200)
+          expect(res.status).toEqual(200)
           expect(typeof res.body.data.accessToken).toEqual('string')
           expect(typeof res.body.data.refreshToken).toEqual('string')
           done()
@@ -46,7 +46,7 @@ describe('Auth', () => {
         .post('/api/auth/refresh-tokens')
         .send({ token })
         .then(res => {
-          expect(res.body.status).toEqual(200)
+          expect(res.status).toEqual(200)
           expect(typeof res.body.data.accessToken).toEqual('string')
           expect(typeof res.body.data.refreshToken).toEqual('string')
           done()

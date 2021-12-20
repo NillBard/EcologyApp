@@ -13,7 +13,7 @@ describe('User', () => {
       .get('/api/users/me')
       .set('Authorization', `Bearer ${token}`)
       .then(res => {
-        expect(res.body.status).toEqual(200)
+        expect(res.status).toEqual(200)
         expect(res.body.data.name).toBeDefined()
         expect(res.body.data.email).toBeDefined()
         expect(res.body.data.exp).toBeDefined()

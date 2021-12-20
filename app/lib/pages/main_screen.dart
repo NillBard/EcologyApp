@@ -1,15 +1,14 @@
 import 'package:echology/pages/recycling_tracker.dart';
+import 'package:echology/providers/auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:echology/models/user.dart';
 import 'package:echology/pages/profile.dart';
 import 'package:echology/pages/blog_page.dart';
 import 'package:echology/pages/proscessing_map.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  final UserModel userModel;
-
-  const MainScreen(this.userModel, {Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreen createState() => _MainScreen();
@@ -17,18 +16,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreen extends State<MainScreen> {
   int _selectedIndex = 3;
-  late List<Widget> _widgetOptions;
-
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions = <Widget>[
-      RecyclingTracker(),
-      ProcessingMap(),
-      const blogPage(),
-      Profile(widget.userModel)
-    ];
-  }
+  final List<Widget> _widgetOptions = <Widget>[
+    RecyclingTracker(),
+    ProcessingMap(),
+    const BlogPage(),
+    const Profile()
+  ];
 
   void _onItemTap(int index) {
     setState(() {
@@ -38,42 +31,50 @@ class _MainScreen extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.repeat_on_rounded,
+    return Consumer<AuthState>(builder: (_, auth, __) {
+      if (auth.user == null) {
+        Future.delayed(const Duration(milliseconds: 1), () {
+          Navigator.pushNamed(context, '/login');
+        });
+      }
+
+      return Scaffold(
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.refresh_sharp,
+              ),
+              label: 'Tracker',
             ),
-            label: 'Recycling',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.map,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.map,
+              ),
+              label: 'Map',
             ),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.article,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.article,
+              ),
+              label: 'Article',
             ),
-            label: 'Article',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              label: 'Account',
             ),
-            label: 'Account',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTap,
-        selectedItemColor: Colors.green,
-        unselectedIconTheme: const IconThemeData(color: Colors.grey),
-      ),
-    );
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTap,
+          selectedItemColor: Colors.green,
+          unselectedIconTheme: const IconThemeData(color: Colors.grey),
+        ),
+      );
+    });
   }
 }
