@@ -1,4 +1,4 @@
-# echology
+# ecology
 
 A new Flutter project.
 

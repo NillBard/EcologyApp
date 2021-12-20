@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:echology/widgets/auth_logo.dart';
-import 'package:echology/widgets/form_field.dart';
-import 'package:echology/widgets/button.dart';
-import 'package:echology/providers/sign_up.dart';
-import 'package:echology/providers/auth.dart';
+import 'package:ecology/widgets/auth_logo.dart';
+import 'package:ecology/widgets/form_field.dart';
+import 'package:ecology/widgets/button.dart';
+import 'package:ecology/providers/sign_up.dart';
+import 'package:ecology/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatelessWidget {

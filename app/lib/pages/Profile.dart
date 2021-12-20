@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:echology/widgets/Logo.dart';
-import 'package:echology/providers/auth.dart';
+import 'package:ecology/widgets/Logo.dart';
+import 'package:ecology/providers/auth.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
