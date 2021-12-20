@@ -81,6 +81,8 @@ class _RecyclingTrackerState extends State<RecyclingTracker> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
+            child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60),
       child: Column(
         children: <Widget>[
           const Logo(),
@@ -103,7 +105,7 @@ class _RecyclingTrackerState extends State<RecyclingTracker> {
                   })),
         ],
       ),
-    ));
+    )));
   }
 }
 
@@ -112,6 +114,7 @@ Widget trackButton(String name, counter, decrease, increase) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(name, style: const TextStyle(fontSize: 30)),
+      const Spacer(),
       IconButton(
         icon: const Icon(
           Icons.remove_circle_outline,
