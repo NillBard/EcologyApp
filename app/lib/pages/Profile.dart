@@ -20,6 +20,16 @@ class Profile extends StatelessWidget {
                 child: Column(children: <Widget>[
                   const Logo(),
                   profileInfo(auth.user.name, auth.user.id),
+                  Text(
+                    "lvl ${(auth.user.exp / 100).ceil()}",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                  const Spacer(flex: 1),
+                  LinearProgressIndicator(
+                    value: (auth.user.exp % 100).toDouble() / 100,
+                  ),
+                  const Spacer(flex: 2),
                   Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: Row(
@@ -27,7 +37,8 @@ class Profile extends StatelessWidget {
                         children: const [
                           Text(
                             'Утилизировано:',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           )
                         ],
                       )),
@@ -36,7 +47,7 @@ class Profile extends StatelessWidget {
                   typeTrashProcessing("электроприборов", auth.user.electronic),
                   typeTrashProcessing("аккумуляторов", auth.user.batteries),
                   typeTrashProcessing("стекла", auth.user.glass),
-                  const Spacer(),
+                  const Spacer(flex: 4),
                   TextButton(
                       child:
                           const Text('Log out', style: TextStyle(fontSize: 20)),
