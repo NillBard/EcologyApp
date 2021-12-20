@@ -32,7 +32,16 @@ module.exports = {
 
       const hashedPassowrd = await bcrypt.hash(req.body.password, 10)
       const user = await this.entity.create({
-        data: { ...req.body, password: hashedPassowrd, exp: 0 },
+        data: {
+          ...req.body,
+          password: hashedPassowrd,
+          exp: 0,
+          paper: 0,
+          plastic: 0,
+          glass: 0,
+          batteries: 0,
+          electronic: 0,
+        },
       })
       const refreshToken = this._generateRefreshToken({ id: user.id })
       const accessToken = this._generateAccessToken({

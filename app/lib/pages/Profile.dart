@@ -18,7 +18,13 @@ class Profile extends StatelessWidget {
             children: <Widget>[
               const Logo(),
               profileInfo(auth.user.name, auth.user.id),
-              const LsitTypeTrash(),
+              TypeTrashProcessing("Утилизированно пластика", auth.user.plastic),
+              TypeTrashProcessing("Утилизированно бумаги", auth.user.paper),
+              TypeTrashProcessing(
+                  "Утилизированно электроприборов", auth.user.electronic),
+              TypeTrashProcessing(
+                  "Утилизированно аккумуляторов", auth.user.batteries),
+              TypeTrashProcessing("Утилизированно стекла", auth.user.glass),
               TextButton(
                 child: const Text('Log out'),
                 onPressed: () {
@@ -57,44 +63,30 @@ Widget profileInfo(String name, int id) {
   ]);
 }
 
-class TypeTrashProcessing extends StatelessWidget {
-  const TypeTrashProcessing({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            Text(
-              'Утилизированно пластика: 15 ед.',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 20.0,
-              ),
+Widget TypeTrashProcessing(String typeTrash, int counter) {
+  return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            typeTrash,
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+              fontSize: 20.0,
             ),
-            Text('Посмотреть больше',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18.0,
-                )),
-          ],
-        ));
-  }
-}
-
-class LsitTypeTrash extends StatelessWidget {
-  const LsitTypeTrash({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const <Widget>[TypeTrashProcessing(), TypeTrashProcessing()],
-    );
-  }
+          ),
+          Text(
+            '$counter',
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+              fontSize: 20.0,
+            ),
+          )
+        ],
+      ));
 }
