@@ -18,7 +18,7 @@ class Http {
     }
   }
 
-  Future<T> get<T>(String path, T Function(Map<String, dynamic>) factory,
+  Future<T> get<T, S extends dynamic>(String path, T Function(S) factory,
       {Map<String, String>? headers = const {}}) async {
     var res = await http.get(Uri.parse('$baseUrl$path'),
         headers: {}
@@ -27,7 +27,7 @@ class Http {
     return factory(_parseJson(res.body));
   }
 
-  Future<T> post<T>(String path, T Function(Map<String, dynamic>) factory,
+  Future<T> post<T, S extends dynamic>(String path, T Function(S) factory,
       {Map<String, String>? headers, Object? body}) async {
     var res = await http.post(Uri.parse('$baseUrl$path'),
         headers: {}

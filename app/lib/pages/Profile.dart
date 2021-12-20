@@ -13,9 +13,9 @@ class Profile extends StatelessWidget {
     return Consumer<AuthState>(builder: (_, auth, __) {
       if (auth.user != null) {
         return Scaffold(
+            backgroundColor: Colors.white,
             body: Center(
-          child: Column(
-            children: <Widget>[
+                child: Column(children: <Widget>[
               const Logo(),
               profileInfo(auth.user.name, auth.user.id),
               TypeTrashProcessing("Утилизированно пластика", auth.user.plastic),
@@ -31,9 +31,7 @@ class Profile extends StatelessWidget {
                   auth.logOut();
                 },
               ),
-            ],
-          ),
-        ));
+            ])));
       } else {
         return Container();
       }
