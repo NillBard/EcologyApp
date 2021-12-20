@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:echology/helpers/http.dart';
-import 'package:echology/models/auth.dart';
-import 'package:echology/models/user.dart';
+import 'package:ecology/helpers/http.dart';
+import 'package:ecology/models/auth.dart';
+import 'package:ecology/models/user.dart';
 
 import 'base.dart';
 

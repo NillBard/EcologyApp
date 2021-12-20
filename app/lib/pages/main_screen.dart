@@ -1,11 +1,12 @@
-import 'package:echology/pages/recycling_tracker.dart';
-import 'package:echology/providers/auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:echology/pages/profile.dart';
-import 'package:echology/pages/blog_page.dart';
-import 'package:echology/pages/proscessing_map.dart';
 import 'package:provider/provider.dart';
+
+import 'package:ecology/pages/recycling_tracker.dart';
+import 'package:ecology/pages/profile.dart';
+import 'package:ecology/pages/blog_page.dart';
+import 'package:ecology/pages/proscessing_map.dart';
+import 'package:ecology/providers/auth.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
